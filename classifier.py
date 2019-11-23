@@ -50,3 +50,29 @@ class BoxClassifier(torch.nn.Module):
         x = torch.cat((x, x1), 1)
         return F.relu(self.fc2(x)).view(-1, 9, 4)
 
+
+class SeqClassifier(torch.nn.Module):
+    def __init__(self):
+        super(SeqClassifier, self).__init__()
+        device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
+        self.lstm1 = torch.nn.LSTM(4, 100, batch_first=True)
+        self.lstm2 = torch.nn.LSTM(4, 100, batch_first=True)
+        self.lstm3 = torch.nn.LSTM(4, 100, batch_first=True)
+        self.fc = torch.nn.Linear(300, 3 * 4)
+        self.cell1 = (torch.zeros(1, 50, 100).to(device),
+                             torch.zeros(1, 50, 100).to(device))
+        self.cell2 = (torch.zeros(1, 50, 100).to(device),
+                             torch.zeros(1, 50, 100).to(device))
+        self.cell3 = (torch.zeros(1, 50, 100).to(device),
+                             torch.zeros(1, 50, 100).to(device))
+
+    def forward(self, x1, x2, x3):
+        l1, self.cell1 = self.lstm1(x1, self.cell1)
+        l1 = l1[:,-1,:]
+        l2, self.cell2 = self.lstm2(x2, self.cell2)
+        l2 = l2[:, -1, :]
+        l3, self.cell3 = self.lstm3(x3, self.cell3)
+        l3 = l3[:, -1, :]
+        l = torch.cat([l1, l2, l3], dim=1)
+        x = self.fc(l)
+        return F.relu(x)
