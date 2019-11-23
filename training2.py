@@ -58,7 +58,7 @@ for epoch in range(2000):
 
     for batch, (valid_img, valid_presence, valid_box) in enumerate(validation):
 
-        if (batch % 50) == 0:
+        if (batch % 20) == 0:
             print("batch:", batch)
 
         out2 = boxModel(valid_img.to(device))
