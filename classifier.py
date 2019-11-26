@@ -59,12 +59,14 @@ class SeqClassifier(torch.nn.Module):
         self.lstm2 = torch.nn.LSTM(4, 100, batch_first=True)
         self.lstm3 = torch.nn.LSTM(4, 100, batch_first=True)
         self.fc = torch.nn.Linear(300, 3 * 4)
-        self.cell1 = (torch.zeros(1, 50, 100).to(device),
-                             torch.zeros(1, 50, 100).to(device))
-        self.cell2 = (torch.zeros(1, 50, 100).to(device),
-                             torch.zeros(1, 50, 100).to(device))
-        self.cell3 = (torch.zeros(1, 50, 100).to(device),
-                             torch.zeros(1, 50, 100).to(device))
+
+        # for training change (1, 1, 100) to (1, 50, 100)
+        self.cell1 = (torch.zeros(1, 1, 100).to(device),
+                             torch.zeros(1, 1, 100).to(device))
+        self.cell2 = (torch.zeros(1, 1, 100).to(device),
+                             torch.zeros(1, 1, 100).to(device))
+        self.cell3 = (torch.zeros(1, 1, 100).to(device),
+                             torch.zeros(1, 1, 100).to(device))
 
     def forward(self, x1, x2, x3):
         l1, self.cell1 = self.lstm1(x1, self.cell1)
