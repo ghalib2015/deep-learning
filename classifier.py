@@ -78,9 +78,9 @@ class SeqClassifier(torch.nn.Module):
         l = torch.cat([l1, l2, l3], dim=1)
         x = self.fc(l)
         return F.relu(x)
-    
+
  #Another version of the sequence model with faster convergence (faster training)
- class NewSeqClassifier(torch.nn.Module):
+class NewSeqClassifier(torch.nn.Module):
     def __init__(self):
         super(NewSeqClassifier, self).__init__()
         self.lstm = torch.nn.LSTM(4, 100, batch_first=True)
@@ -95,4 +95,3 @@ class SeqClassifier(torch.nn.Module):
             return l.unsqueeze(1)
         x = torch.cat((_forward(x1),_forward(x2),_forward(x3)), dim=1)        
         return x
-
