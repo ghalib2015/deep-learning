@@ -4,7 +4,7 @@ It contains the models for the 3 tasks. </br>
 - The architectures are defined on classifier.py with 3 models, one for each task. </br>
   - colorClassifier</br>
   - BoxClassifier</br>
-  - SeqClassifier and NewSeqClassifier</br>
+  - SeqClassifier and newSeqClassifier</br>
 - The training was done with:</br>
   - training.py for color</br>
   - training2.py for box</br>
